@@ -1,3 +1,9 @@
+%%
+% 
+%   for x = 1:10
+%       disp(x)
+%   end
+% 
 function [cells] = segIms(im)
 
 cells = cell(1,size(im,5));

@@ -20,6 +20,7 @@ Fr = cell(1,size(im,3));
 for i = 1:size(im,3)
     
     Tsegs = AllSegs([AllSegs.time]==i);
+    % put break on next line to step through outlined cells
     TTracks = [Tsegs.Tid];
     
     imagesc(im(:,:,i))
