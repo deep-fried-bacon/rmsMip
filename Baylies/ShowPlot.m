@@ -1,4 +1,4 @@
-function ShowPlot(Cells,Dims,Name)
+function ShowPlot(Cells,Dims,condition,well,fs)
 
 %size(Cells)
 %size(Cells(2))
@@ -36,9 +36,13 @@ Mat = cell(length(Cells)+colCount,colCount*max(length(Tracks),1));
 %hold on
 hold off
 %ylim([0 20])
-plotCount = 1
-fs = []
-close all
+plotCount = 1;
+%fs = [];
+%close all
+laeout = [4 3];
+%temp = figure
+%fs = [fs,figure];
+%title(condition)
 for i = 1:length(Tracks)
     try
         
@@ -68,14 +72,15 @@ for i = 1:length(Tracks)
         Veloc = sqrt(DeltaPos(:,1).^2+DeltaPos(:,2).^2);
         MeanVoc = mean(Veloc);
         
-        subplot(2,3,plotCount)
+        subplot(laeout(1),laeout(2),plotCount)
         tempIntervals = tIntervals(1:size(Veloc,1));
         scatter (tempIntervals, Veloc, 'filled')
-        title(Tracks(i))
+        title(well + ": " + Tracks(i))
         ylim([0,50])
-        if plotCount == 6 
+        if plotCount == laeout(1)*laeout(2)
             plotCount = 1;
-            fs = [fs,figure];
+            fs = [fs,figure('Name',condition)];
+            title(condition)
             
         else
             plotCount = plotCount + 1;

@@ -10,14 +10,15 @@ folder2 = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/16-06-23_plate-1_partia
 dlist = dir(fullfile(folder,'*.czi'));
 %disp(dlist(1));
 %for i = 1:size(dlist)
-
+fs = [];
 f1 = '/Users/baylieslab/Documents/Amelia/rms/rmsMip/rmsMatip/misc/2018-03-18_plateMap.csv';
 
-[conditions,condictDict] = MakeConditDict(f1);
+[conditions,conditDict] = MakeConditDict(f1);
 prefix = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/18-03-18_Subset/18-03-18_';
 pref2 = '18-03-18_';
 suffix = '.czi';
-for condition = conditions
+for condition = conditions(11)
+    disp(condition{1})
     %disp(class(condition))
     
     wells = conditDict(condition{1});
@@ -25,6 +26,7 @@ for condition = conditions
         wellF = strcat(prefix,well{1},suffix);
         wellN = strcat(pref2,well{1},suffix);
         if exist(wellF, 'file')
+            disp(wellN)
     %end
         %for d = dlist :
         
@@ -39,18 +41,25 @@ for condition = conditions
     %% Get Images
     %Name = fullfile(folder,dlist(i).name);
     %Name = fullfile(folder,dlist(i).name);
-        %try
-
+%         try
+            temp = figure('Name',condition{1});
+            fs = [fs,temp];
             [im,imd] =  MicroscopeData.Original.ReadData(folder,wellN);
+            
+            %figure(fs(1,1));
+            %figure(1)
 
             [cells] = segIms(im);
 
+            %figure(fs(1,1));
+            %fs(1,1);
             [cells2,Edges] = getTracks(cells,size(im));
 
 
-            DrawTracks(squeeze(im),cells2,wellF);
+            %DrawTracks(squeeze(im),cells2,wellF);
 
-            ExportTrackStats(cells2,size(im),wellF)
+            %ExportTrackStats(cells2,size(im),wellF)
+            ShowPlot(cells2,size(im),condition,well{1},fs)
 
 %         catch e
 %             disp("i = " + i + ", well " + wellN(end-6:end-4))
