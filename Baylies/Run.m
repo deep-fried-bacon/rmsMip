@@ -16,46 +16,56 @@ prefix = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/18-03-18_Subset/18-03-18
 pref2 = '18-03-18_';
 suffix = '.czi';
 
+exper = struct()
+exper.frameCount = 0;
+
 for condition = conditions(9)
     %conditVelocs = cell
     disp(condition{1})
     
     wells = conditDict(condition{1});
-    conditVeloc = cell(3);
-    for well = wells 
-        wellF = strcat(prefix,well{1},suffix);
-        wellN = strcat(pref2,well{1},suffix);
-        if exist(wellF, 'file')
-            disp(wellN)
-        
+    conditVeloc = cell(size(wells,2));
+    for w = wells 
+        well = struct();
+        well.condition = condition{1};
+        well.name = w{1};
+        well.path = strcat(prefix,well.name,suffix);
+        well.filename = strcat(pref2,well.name,suffix);
+        if exist(well.path, 'file')
+            
+            %disp(well.filename)
+            disp("\t" + well.name)
         
 
             %try
-            temp = figure('Name',condition{1});
+            temp = figure('Name',well.condition);
             fs = [fs,temp];
             
             %% Get Images
-            [im,imd] =  MicroscopeData.Original.ReadData(folder,wellN);
+            [well.im,well.imd] =  MicroscopeData.Original.ReadData(folder,well.filename);
             
-            
+            well.imdim = size(well.im)
+            if exper.frameCount == 0 
+                exper.frameCount = well.imdim(5)
+            end
 
-            [cells] = segIms(im);
+            [well.cells] = segIms(well.im);
 
             
-            [cells2,Edges] = getTracks(cells,size(im));
+            [well.cells2,well.edges] = getTracks(well.cells,well.imdim);
 
 
             %DrawTracks(squeeze(im),cells2,wellF);
 
             %ExportTrackStats(cells2,size(im),wellF)
             
-            AllSegs = vertcat(cells2{:});
-            AllTracks = [AllSegs.Tid];
-            Tracks = unique(AllTracks);
-            cellCount = size(Tracks,2)
-            wellVeloc = cell(size(im,5),size(Tracks,2));
+            well.allSegs = vertcat(well.cells2{:});
+            well.allTracks = [well.allSegs.Tid];
+            well.tracks = unique(well.allTracks);
+            well.cellCount = size(well.tracks,2);
+            well.velocs = cell(exper.frameCount,size(well.tracks,2));
             
-            ShowPlot(cells2,size(im),condition,well{1},fs)
+            ShowPlot(well.cells2,well.name,condition,fs)
 
     %         catch e
     %             disp("i = " + i + ", well " + wellN(end-6:end-4))

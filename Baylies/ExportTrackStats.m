@@ -76,7 +76,7 @@ for i = 1:length(Tracks)
 
         Mat(3,(i-1)*colCount+1) = num2cell(MeanVoc);
         Mat(3,(i-1)*colCount+2) = num2cell(Tort);
-        Mat(3,(i-1)*colCount+3) = num2cell(MeanSize);
+        Mat(3,(i-1)*colCount+3) = num2cell(MeanSize);c
         Mat(3,(i-1)*colCount+4) = num2cell(mean(HullCov));
 
         Mat(Times+4,((i-1)*colCount+1):((i-1)*colCount+2)) = num2cell(HullPos(:,[1,2]));

@@ -1,4 +1,4 @@
-function ShowPlot(Cells,Dims,condition,well,fs)
+function ShowPlot(Cells,well,condition,fs)
 
 %size(Cells)
 %size(Cells(2))
