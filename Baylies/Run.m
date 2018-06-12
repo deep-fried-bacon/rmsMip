@@ -1,4 +1,4 @@
-%% Add BioFormats 
+p%% Add BioFormats 
 addpath('../Utilities/src/MATLAB')
 %folder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/'
 folder = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/18-03-18_Subset';
