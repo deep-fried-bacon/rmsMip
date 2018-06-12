@@ -43,6 +43,12 @@ laeout = [4 3];
 %temp = figure
 %fs = [fs,figure];
 %title(condition)
+
+
+temp = figure('Name',condition);
+fs = [fs,temp];
+title(condition)
+            
 for i = 1:length(Tracks)
     try
         
@@ -77,9 +83,11 @@ for i = 1:length(Tracks)
         scatter (tempIntervals, Veloc, 'filled')
         title(well + ": " + Tracks(i))
         ylim([0,50])
+        %ylim([0,10])
         if plotCount == laeout(1)*laeout(2)
             plotCount = 1;
-            fs = [fs,figure('Name',condition)];
+            temp = figure('Name',condition);
+            fs = [fs,temp];
             title(condition)
             
         else

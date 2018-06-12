@@ -1,25 +1,26 @@
-p%% Add BioFormats 
+%% Add BioFormats 
 addpath('../Utilities/src/MATLAB')
 %folder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/'
-folder = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/18-03-18_Subset';
-folder2 = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/16-06-23_plate-1_partial';
+folder = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18';
+folder2 = '/Users/baylieslab/Documents/Amelia/rmsMim/16-06-23_plate-1_partial';
 %folder = pwd();
 %folder = uigetdir();
 
 dlist = dir(fullfile(folder,'*.czi'));
 fs = [];
-f1 = '/Users/baylieslab/Documents/Amelia/rms/rmsMip/rmsMatip/misc/2018-03-18_plateMap.csv';
+f1 = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/18-03-18_plate-map.csv';
 
 [conditions,conditDict] = MakeConditDict(f1);
 
-prefix = '/Users/baylieslab/Documents/Amelia/rms/rmsMim/18-03-18_Subset/18-03-18_';
+
+prefix = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/18-03-18_';
 pref2 = '18-03-18_';
 suffix = '.czi';
 
-exper = struct()
+exper = struct();
 exper.frameCount = 0;
 
-for condition = conditions(9)
+for condition = conditions([9,14])
     %conditVelocs = cell
     disp(condition{1})
     
@@ -34,7 +35,7 @@ for condition = conditions(9)
         if exist(well.path, 'file')
             
             %disp(well.filename)
-            disp("\t" + well.name)
+            disp(well.name)
         
 
             %try
@@ -44,9 +45,9 @@ for condition = conditions(9)
             %% Get Images
             [well.im,well.imd] =  MicroscopeData.Original.ReadData(folder,well.filename);
             
-            well.imdim = size(well.im)
+            well.imdim = size(well.im);
             if exper.frameCount == 0 
-                exper.frameCount = well.imdim(5)
+                exper.frameCount = well.imdim(5);
             end
 
             [well.cells] = segIms(well.im);
@@ -63,9 +64,10 @@ for condition = conditions(9)
             well.allTracks = [well.allSegs.Tid];
             well.tracks = unique(well.allTracks);
             well.cellCount = size(well.tracks,2);
+            disp("well.cellCount = " + well.cellCount)
             well.velocs = cell(exper.frameCount,size(well.tracks,2));
             
-            ShowPlot(well.cells2,well.name,condition,fs)
+            ShowPlot(well.cells2,well.name,well.condition,fs)
 
     %         catch e
     %             disp("i = " + i + ", well " + wellN(end-6:end-4))

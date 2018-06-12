@@ -19,9 +19,9 @@ suffix = '.czi';
 exper = struct()
 exper.frameCount = 0;
 i=1
-for condition = conditions(9)
+for condition = conditions
     disp(i)
-    i +=1
+    i = i +1;
     %conditVelocs = cell
     disp(condition{1})
     
