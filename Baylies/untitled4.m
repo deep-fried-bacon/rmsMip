@@ -1,22 +1,29 @@
-function ShowPlot(Cells,well,condition)%,fs)
-fs=[]
-%size(Cells)
-%size(Cells(2))
+
+well = "B02";
+condition = "PI-103 10";
+temp = load('Cells.mat');
+Cells = temp.Cells;
+
+fs=[];
+
+
+blu =   [0.00,0.45,0.75];
+ora =   [0.85,0.33,0.10];
+yel =   [0.93,0.69,0.13];
+purp =  [0.49,0.18,0.56];
+gree =  [0.47,0.67,0.19];
+lblu =  [0.30,0.75,0.93];
+red =   [0.64,0.08,0.18];
+
+myColors = [blu;ora;yel;gree]
+
+
+
 tIntervals = zeros(size(Cells,2),1);
 for i = 1:size(tIntervals)
     tIntervals(i) = i * (1.0/6.0);
 end
-% 
 
-%%
-% [P,F,~] = fileparts(Name);
-% P2 = fullfile(P,'Xls');
-% if ~exist(P2,'dir')
-%     mkdir(P2)
-% end
-% XlsName = fullfile(P2,[F,'.csv']);
-
-%% Put Segs Together
 AllSegs = vertcat(Cells{:});
 AllTracks = [AllSegs.Tid];
 
@@ -24,27 +31,17 @@ Tracks = unique(AllTracks);
 counts = hist(AllTracks,Tracks);
 Tracks = Tracks(counts>20);
 
-%%
+
 colCount = 5;
 
 Mat = cell(length(Cells)+colCount,colCount*max(length(Tracks),1));
 
 
-% imd = CONSTANTS.imageData;
-% ResolutionXYZ = imd.PixelPhysicalSize;
-% ResolutionTime = mean(diff(imd.TimeStampDelta)) * 60 * 60;
-%hold on
-hold on
-%ylim([0 20])
-plotCount = 1;
-seriesCount = 0;
-%fs = [];
-%close all
-laeout = [4 3];
-%temp = figure
-%fs = [fs,figure];
-%title(condition)
 
+hold on
+plotCount = 1;
+seriesCount = 1;
+laeout = [4 3];
 
 temp = figure('Name',condition);
 fs = [fs,temp];
@@ -81,10 +78,12 @@ for i = 1:length(Tracks)
         
         
         
-        if seriesCount < 4 
+        if seriesCount == 4 
             subplot(laeout(1),laeout(2),plotCount)
             myLine = refline(0,5);
             myLine.Color = 'r';
+            title(well + ": " + Tracks(i))
+            ylim([0,50])
             
             seriesCount = 0;
             if plotCount == laeout(1)*laeout(2)
@@ -101,24 +100,12 @@ for i = 1:length(Tracks)
         end
         
         tempIntervals = tIntervals(1:size(Veloc,1));
-        scatter (tempIntervals, Veloc, 'filled')
+        scatter (tempIntervals, Veloc, 'filled','Color',myColors(seriesCount))
         title(well + ": " + Tracks(i))
         ylim([0,50])
         
        
-        %ylim([0,10])
         
-
-%         %Convert velocity to physical space and real time
-%         % MeanVoc = MeanVoc* ResolutionXYZ(1) / ResolutionTime;
-% 
-%         TotalDisp = sum(sqrt(DeltaPos(:,1).^2 + DeltaPos(:,2).^2));
-%         LengthTraveled = norm(HullPos(1,:) - HullPos(end,:));
-%         Tort =  TotalDisp./LengthTraveled;
-% 
-%         %% Write to Cell Mat
-% 
-% 
     catch e
         
         % added because sometimes index exceeds matrix dimensions error
@@ -133,8 +120,4 @@ for i = 1:length(Tracks)
     end     
 
 end
-% T = cell2table(Mat);
-% writetable(T,XlsName,'WriteVariableNames',0);
-%disp(Mat)
-%xlswrite(XlsName,Mat)
-end
+

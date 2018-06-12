@@ -1,4 +1,5 @@
 %% Add BioFormats 
+tic
 addpath('../Utilities/src/MATLAB')
 %folder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/'
 folder = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18';
@@ -56,7 +57,7 @@ for condition = conditions([9,14])
             [well.cells2,well.edges] = getTracks(well.cells,well.imdim);
 
 
-            %DrawTracks(squeeze(im),cells2,wellF);
+            %DrawTracks(squeeze(well.im),well.cells2,well.filename);
 
             %ExportTrackStats(cells2,size(im),wellF)
             
@@ -78,9 +79,10 @@ for condition = conditions([9,14])
     %         end
 
         end
+    %break
     end
 
-
+toc
 end 
 
 % dlist2 = dir(fullfile(folder,'Xls','*.txt'));
