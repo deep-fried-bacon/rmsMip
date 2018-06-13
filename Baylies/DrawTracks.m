@@ -1,5 +1,6 @@
 
 function DrawTracks(im,Segs,Name)
+ugh = 0;
 
 
 close all, 
@@ -44,32 +45,16 @@ for i = 1:size(im,3)
     
     
     if saveframe
-        Fr{i} = getframe(gca);
+        %Fr{i} = getframe(gca);
+        tempGca = getframe(gca);
+        if ugh == 0
+            imwrite(tempGca.cdata,'butts2.tif')
+            ugh = 1;
+        else
+            imwrite(tempGca.cdata,'butts2.tif','WriteMode','append') 
+        end
     end
 end
 
 %MakeMovie(Fr,Name)
-
-
-[P,F,~] = fileparts(Name);
-
-
-% P2 = fullfile(P,'Tiffs');
-% if ~exist(P2,'dir')
-%     mkdir(P2)
-% end 
-% VidName = fullfile(P2,[F,'.tiff']);
-VidName = strcat('/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/',F,".tif");
-
-disp(VidName)
-
-%Fr2 = uint8(size(Fr));
-tempData = Fr{1}.cdata;
-imwrite(tempData,VidName)
-for i = 2:size(Fr)
-    tempData = Fr{i}.cdata;
-    imwrite(tempData,VidName,'WriteMode','append')
-end
-
-
 end

@@ -1,8 +1,23 @@
+
+
+
 %% Add BioFormats 
-tic
 addpath('../Utilities/src/MATLAB')
+
+%% Directory 
+
+
+
+opt1 = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/';
+
+
+
+
+folder = ;
+
+tic
 %folder = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/17-06-28 final pi3k inhibitors/'
-folder = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18';
+folder = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/';
 folder2 = '/Users/baylieslab/Documents/Amelia/rmsMim/16-06-23_plate-1_partial';
 %folder = pwd();
 %folder = uigetdir();
@@ -27,7 +42,13 @@ for condition = conditions([9,14])
     
     wells = conditDict(condition{1});
     conditVeloc = cell(size(wells,2));
+    buttts = true;
     for w = wells 
+        if buttts    
+            buttts = false;
+
+            continue
+        end
         well = struct();
         well.condition = condition{1};
         well.name = w{1};
