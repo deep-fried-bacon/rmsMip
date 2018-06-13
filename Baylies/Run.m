@@ -40,8 +40,8 @@ for condition = conditions([9,14])
         
 
             %try
-            temp = figure('Name',well.condition);
-            fs = [fs,temp];
+%             temp = figure('Name',well.condition);
+%             fs = [fs,temp];
             
             %% Get Images
             [well.im,well.imd] =  MicroscopeData.Original.ReadData(folder,well.filename);
@@ -57,18 +57,18 @@ for condition = conditions([9,14])
             [well.cells2,well.edges] = getTracks(well.cells,well.imdim);
 
 
-            %DrawTracks(squeeze(well.im),well.cells2,well.filename);
+            DrawTracks(squeeze(well.im),well.cells2,well.filename);
 
             %ExportTrackStats(cells2,size(im),wellF)
             
-            well.allSegs = vertcat(well.cells2{:});
-            well.allTracks = [well.allSegs.Tid];
-            well.tracks = unique(well.allTracks);
-            well.cellCount = size(well.tracks,2);
-            disp("well.cellCount = " + well.cellCount)
-            well.velocs = cell(exper.frameCount,size(well.tracks,2));
-            
-            ShowPlot(well.cells2,well.name,well.condition,fs)
+%             well.allSegs = vertcat(well.cells2{:});
+%             well.allTracks = [well.allSegs.Tid];
+%             well.tracks = unique(well.allTracks);
+%             well.cellCount = size(well.tracks,2);
+%             disp("well.cellCount = " + well.cellCount)
+%             well.velocs = cell(exper.frameCount,size(well.tracks,2));
+%             
+%             ShowPlot(well.cells2,well.name,well.condition,fs)
 
     %         catch e
     %             disp("i = " + i + ", well " + wellN(end-6:end-4))
@@ -79,7 +79,7 @@ for condition = conditions([9,14])
     %         end
 
         end
-    %break
+    break
     end
 
 toc

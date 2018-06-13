@@ -15,7 +15,7 @@ gree =  [0.47,0.67,0.19];
 lblu =  [0.30,0.75,0.93];
 red =   [0.64,0.08,0.18];
 
-myColors = [blu;ora;yel;gree]
+myColors = [blu;ora;yel;gree];
 
 
 
@@ -39,13 +39,15 @@ Mat = cell(length(Cells)+colCount,colCount*max(length(Tracks),1));
 
 
 hold on
-plotCount = 1;
+plotCount = 2;
 seriesCount = 1;
 laeout = [4 3];
 
 temp = figure('Name',condition);
 fs = [fs,temp];
 title(condition)
+subplot(laeout(1),laeout(2),1)
+
             
 for i = 1:length(Tracks)
     try
@@ -81,7 +83,7 @@ for i = 1:length(Tracks)
         if seriesCount == 4 
             subplot(laeout(1),laeout(2),plotCount)
             myLine = refline(0,5);
-            myLine.Color = 'r';
+            myLine.Color = [0 0 0];
             title(well + ": " + Tracks(i))
             ylim([0,50])
             
@@ -100,7 +102,8 @@ for i = 1:length(Tracks)
         end
         
         tempIntervals = tIntervals(1:size(Veloc,1));
-        scatter (tempIntervals, Veloc, 'filled','Color',myColors(seriesCount))
+        hold on
+        t = scatter(tempIntervals, Veloc, 'filled','MarkerFaceColor',myColors(seriesCount,:))
         title(well + ": " + Tracks(i))
         ylim([0,50])
         
