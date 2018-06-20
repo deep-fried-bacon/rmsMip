@@ -6,7 +6,8 @@ classdef hstruct < handle
 	methods
 		function obj = hstruct(data)
 			obj.data = data;
-		end
+        end
+        
 	end
 end
 

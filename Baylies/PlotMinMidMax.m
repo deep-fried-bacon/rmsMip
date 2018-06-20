@@ -1,4 +1,5 @@
-function ShowPlot(Cells,well,condition,fs)
+function PlotMinMidMax(Cells,well,condition,fs))
+
 %fs=[]
 %size(Cells)
 %size(Cells(2))

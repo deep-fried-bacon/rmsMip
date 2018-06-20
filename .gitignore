@@ -1,0 +1,11 @@
+# ignore all media
+*.tif
+*.tiff
+*.mp4
+
+# ignore matlab object and figure files
+*.mat
+*.fig
+
+#ignore self
+#*.gitignore

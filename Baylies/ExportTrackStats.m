@@ -76,7 +76,7 @@ for i = 1:length(Tracks)
 
         Mat(3,(i-1)*colCount+1) = num2cell(MeanVoc);
         Mat(3,(i-1)*colCount+2) = num2cell(Tort);
-        Mat(3,(i-1)*colCount+3) = num2cell(MeanSize);c
+        Mat(3,(i-1)*colCount+3) = num2cell(MeanSize);
         Mat(3,(i-1)*colCount+4) = num2cell(mean(HullCov));
 
         Mat(Times+4,((i-1)*colCount+1):((i-1)*colCount+2)) = num2cell(HullPos(:,[1,2]));
@@ -90,9 +90,12 @@ for i = 1:length(Tracks)
         % don't know what's causing it
         % it appears that for the same well it happens sometimes but not
         % always with what seems to be the same conditions
-        disp("cell " + i + ", track " + Tracks(i))
-        disp("exception: " + e.identifier)
-        disp("except.message: " + e.message)
+%         disp("cell " + i + ", track " + Tracks(i))
+%         disp("exception: " + e.identifier)
+%         disp("except.message: " + e.message)
+
+        fprintf(2,"cell " + i + ", track " + Tracks(i)+"\n")
+        fprintf(2,"exception: " + getReport(e)+"\n")
         continue
 
     end

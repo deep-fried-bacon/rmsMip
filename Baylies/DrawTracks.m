@@ -48,10 +48,10 @@ for i = 1:size(im,3)
         %Fr{i} = getframe(gca);
         tempGca = getframe(gca);
         if ugh == 0
-            imwrite(tempGca.cdata,'butts2.tif')
+            imwrite(tempGca.cdata,'butts2.tiff')
             ugh = 1;
         else
-            imwrite(tempGca.cdata,'butts2.tif','WriteMode','append') 
+            imwrite(tempGca.cdata,'butts2.tiff','WriteMode','append') 
         end
     end
 end
