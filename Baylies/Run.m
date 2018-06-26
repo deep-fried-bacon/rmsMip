@@ -10,9 +10,9 @@ curDir = pwd;
 guiGetDir = @uigetdir;
 
 f18_03_18 = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/';
-
+f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
 exper = struct();
-exper.folder = f18_03_18;
+exper.folder = f18_06_20;
 
 %%
 tic
@@ -53,6 +53,7 @@ for condition = exper.conditions
             catch e
                 fprintf(2,"condition: " + well.condition + ", well:" + well.name)
                 fprintf(2,"exception: " + getReport(e)+"\n")
+                keyboard
 %                 disp("except.message: " + e.message)
 %                 disp(strcat('exception.stack.line: ',e.stack.file))
                 continue
@@ -88,8 +89,15 @@ function well = RunOneWell(exper,well)
 
     [well.cells2,well.edges] = getTracks(well.cells,well.imdim);
 
-
-    DrawTracks(squeeze(well.im),well.cells2,well.filename);
+    
+    %[P,F,~] = fileparts(Name);
+    P2 = fullfile(exper.name,'outTifs');
+    if ~exist(P2,'dir')
+        mkdir(P2)
+    end
+    XlsName = fullfile(P2,[F,'.csv']);
+    well.outTifPath = fullfile(P2,strcat(exper.name,'_',well.name,'.tif'));
+    DrawTracks(squeeze(well.im),well.cells2,well.outTifPath);
     
     ExportTrackStats(well.cells2,well.imdim,well.path)
             

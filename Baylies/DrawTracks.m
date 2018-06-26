@@ -1,5 +1,5 @@
 
-function DrawTracks(im,Segs,Name)
+function DrawTracks(im,Segs,fName)
 ugh = 0;
 
 
@@ -44,14 +44,15 @@ for i = 1:size(im,3)
     drawnow
     
     
+    %fName = 
     if saveframe
         %Fr{i} = getframe(gca);
         tempGca = getframe(gca);
         if ugh == 0
-            imwrite(tempGca.cdata,'butts2.tiff')
+            imwrite(tempGca.cdata,fName)
             ugh = 1;
         else
-            imwrite(tempGca.cdata,'butts2.tiff','WriteMode','append') 
+            imwrite(tempGca.cdata,fName,'WriteMode','append') 
         end
     end
 end
