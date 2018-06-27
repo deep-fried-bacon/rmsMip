@@ -45,15 +45,24 @@ for condition = exper.conditions
         well.name = w{1};
         well.filename = strcat(exper.name,'_',well.name,CZI_SUF);
         well.path = strcat(exper.folder,well.filename);
+            
         
-        if exist(well.path, 'file')
+            [P,F,~] = fileparts(well.path);
+            P2 = fullfile(P,'Xls');
+            if ~exist(P2,'dir')
+                mkdir(P2)
+            end
+            XlsName = fullfile(P2,[F,'.csv']);
+            
+            
+        if exist(well.path, 'file') && ~exist(XlsName,'file')
             try
                 well = RunOneWell(exper,well);
 
             catch e
                 fprintf(2,"condition: " + well.condition + ", well:" + well.name)
                 fprintf(2,"exception: " + getReport(e)+"\n")
-                keyboard
+                
 %                 disp("except.message: " + e.message)
 %                 disp(strcat('exception.stack.line: ',e.stack.file))
                 continue
@@ -91,11 +100,11 @@ function well = RunOneWell(exper,well)
 
     
     %[P,F,~] = fileparts(Name);
-    P2 = fullfile(exper.name,'outTifs');
+    P2 = fullfile(exper.folder,'outTifs');
     if ~exist(P2,'dir')
         mkdir(P2)
     end
-    XlsName = fullfile(P2,[F,'.csv']);
+    %XlsName = fullfile(P2,[F,'.csv']);
     well.outTifPath = fullfile(P2,strcat(exper.name,'_',well.name,'.tif'));
     DrawTracks(squeeze(well.im),well.cells2,well.outTifPath);
     

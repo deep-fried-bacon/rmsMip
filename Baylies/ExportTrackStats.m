@@ -52,8 +52,11 @@ for i = 1:length(Tracks)
         %% Get Covariance
         HullsCR = {cells.PixelList};
         Hullscov = cellfun(@cov, HullsCR,'UniformOutput', false);
-        HullCov = cellfun(@(x) min(x(1,1),x(2,2)) / max(x(1,1),x(2,2)),Hullscov)';
-
+        try
+            HullCov = cellfun(@(x) min(x(1,1),x(2,2)) / max(x(1,1),x(2,2)),Hullscov)';
+        catch
+            HullCov = nan(size(Hullscov,2),1);
+        end
         %% Collect Movement Stats
         HullPos = vertcat(cells.Centroid);
         Times = [cells.time];
@@ -96,6 +99,7 @@ for i = 1:length(Tracks)
 
         fprintf(2,"cell " + i + ", track " + Tracks(i)+"\n")
         fprintf(2,"exception: " + getReport(e)+"\n")
+        keyboard
         continue
 
     end

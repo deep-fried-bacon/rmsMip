@@ -23,7 +23,7 @@ end
 fdns = fieldnames(temp);
 clear temp2
 temp2 = struct()
-for fn = 1:size(fdns,1)
+for fn = 1:size(fdns,1)-1
     f = fdns(fn);
     disp(f)
     grou = [];
@@ -54,7 +54,7 @@ for fn = 1:size(fdns,1)
         for i = 1:plotCount
             
             
-            wells = condit2wells(conditList{i,1},condits);
+            [cond,wells] = condit2wells(conditList{i,1},condits);
 %             for well = wells
             frames = size(wells(1).cells(1).xcoords*2,1);
             t_int = (1/6):(1/6):(frames/6);
@@ -67,14 +67,19 @@ for fn = 1:size(fdns,1)
                     for c = 1:size(wells(w).cells,2)
                         mat(1:frames-1,col) = wells(w).cells(c).distance(2:end);
                         col = col + 1;
+ condits(cond).wells(w).cells(c).coords = horzcat(wells(w).cells(c).xcoords, wells(w).cells(c).ycoords);
+
                     end
                 catch e
                     %fprintf(1,"condition: " + conditList + ", well:" + wells(w).name)
-                    fprintf(1,"condit:"+conditList{i,1});
+                    fprintf(1,"condit:"+conditList{i,1}+"\n");
                     fprintf(2,"exception: " + getReport(e)+"\n")
                     continue
                 end
+                
             end
+            
+            
         
                     
             hold on
@@ -90,16 +95,73 @@ for fn = 1:size(fdns,1)
         end
     end
             
-            
-            
+    
+    
         
         
       
 end
+f = fdns(size(fdns,1));
+    
 
 
-function wells = condit2wells(name,condits) 
-    for condit = condits
+    grou = temp.(f{1})
+%
+%temp2.(f) = grou
+%disp(grou)
+
+    figure
+%disp(condit)
+plotCount = 11;
+colCount = floor(sqrt(plotCount));
+rowCount = colCount;
+n = plotCount - colCount*rowCount;
+if n > 0 
+    colCount = colCount + ceil(n/rowCount);
+end
+%         plotNum = 1;
+%         laeout = [rowCount colCount];
+
+
+
+[cond,wells] = condit2wells(grou,condits);
+%             for well = wells
+frames = size(wells(1).cells(1).xcoords*2,1);
+t_int = (1/6):(1/6):(frames/6);
+%subplot(rowCount,colCount,1)
+title(grou)
+mat = [];
+col = 1;
+for w = 1:size(wells,2)
+    try
+        for c = 1:size(wells(w).cells,2)
+            mat(1:frames-1,col) = wells(w).cells(c).distance(2:end);
+            col = col + 1;
+        end
+    catch e
+        %fprintf(1,"condition: " + conditList + ", well:" + wells(w).name)
+        fprintf(1,"condit:"+grou);
+        fprintf(2,"exception: " + getReport(e)+"\n")
+        continue
+    end
+end
+
+
+hold on
+mea = nanmean(mat,2);
+mea = permute(mea,[2 1]);
+med = nanmedian(mat,2);
+med = permute(med, [2 1]);
+t_int_temp = t_int(1:size(mea,2));
+scatter(t_int_temp,mea,'filled');
+scatter(t_int_temp,med,'filled');
+ylim([0,40])
+legend('mean','median')
+
+function [c,wells] = condit2wells(name,condits) 
+    %for condit = condits
+    for c = 1:size(condits,2)
+        condit = condits(c);
         if strcmp(condit.name,name) 
             wells = condit.wells;
             break
