@@ -2,9 +2,9 @@
 
 
 %% Add MATLAB Utilities for BioFormats 
-addpath('../Utilities/src/MATLAB')
+addpath('../../Utilities/src/MATLAB')
 
-addpath('./aeplClasses')
+addpath('../aeplClasses')
 
 
 %% Directory 

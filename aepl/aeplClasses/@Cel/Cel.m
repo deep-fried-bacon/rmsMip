@@ -1,4 +1,4 @@
-classdef Cell
+classdef Cel
     %CELL Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -14,7 +14,7 @@ classdef Cell
     end
     
     methods
-        function obj = Cell(inputArg1,inputArg2)
+        function obj = Cel(inputArg1,inputArg2)
             %CELL Construct an instance of this class
             %   Detailed explanation goes here
             obj.Property1 = inputArg1 + inputArg2;

@@ -28,11 +28,15 @@ oneTwoThreeB = {'02','03','04','05','06','07','08','09','10','11','12',...
     '13','14','15','16','17','18','19','20','21','22','23','24'};
 
 startColIndex = 2;
+stopColIndex = -1;
 for i = 1:length(oneTwoThree)
     if ~strcmp(ttable{startRowIndices(z)-1,i+1},oneTwoThree{i})
         stopColIndex= i;
         break
     end
+end
+if stopColIndex == -1
+    stopColIndex = 23;
 end
 
 

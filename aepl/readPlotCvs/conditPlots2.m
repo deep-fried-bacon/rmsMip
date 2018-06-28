@@ -176,7 +176,7 @@ function plottyPlot(conditName,laeout,condits)
 %             %s.CData = cmap;
 %             
             p = prctile(mat(:),95);
-            %mat(mat>=50)=nan;
+            mat(mat>50)=nan;
             datMin = nanmin(mat,[],2);
             dat25 = prctile(mat,25,2);
             datMean = nanmean(mat,2);
@@ -203,7 +203,7 @@ function plottyPlot(conditName,laeout,condits)
 
             
             %s.Parent.Color = [0 0 0];
-            ylim([0,50])
+            ylim([0,20])
             
             
             
