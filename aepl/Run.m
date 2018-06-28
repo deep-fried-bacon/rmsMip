@@ -2,8 +2,11 @@ PLATE_MAP_SUF = '_plate-map.csv';
 CZI_SUF = '.czi';
 
 
-%% Add BioFormats 
+%% Add MATLAB Utilities for BioFormats 
 addpath('../Utilities/src/MATLAB')
+
+addpath('/aeplClasses')
+
 
 %% Directory 
 curDir = pwd;
