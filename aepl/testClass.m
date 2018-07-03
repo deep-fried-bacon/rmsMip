@@ -29,10 +29,8 @@ classdef testClass
         
         function B = subsref(obj,S)
            
-            for s = S
-                st = s.type
-                ss = s.subs
             
+            B = S;
             
         end
         

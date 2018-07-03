@@ -16,4 +16,8 @@ f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 
 path = f16_06_23;
 %path = f18_06_20;
-exper = Exper(path)
+tic
+exper = Exper(path);
+toc
+%disp(exper)
+%exper.instansh()

@@ -52,36 +52,24 @@ classdef Exper
             
             [obj.condits, obj.conditIndexMap, obj.groups] = obj.plateMap2condits(obj.plateMapFile) ;
             
-            obj = obj.instansh;
+            %obj = obj.instansh();
+        end
+        
+        
+        function varargout = subsindex(obj,S)
+            disp('subsindex')
+            %disp(S)
+            [varargout{1:nargout}] = builtin('subsindex',obj,S);
         end
         
         
         
-        function srefs = subsref(obj, S)
-            switch S(1).type
-                case '.'
-                    srefs = builtin('subsref',obj,S);
-                    
-                case {'()','{}'}
-                    switch class(S(1).subs{1})
-                        case 'double'
-                            disp('d')
-                            index = S(1).subs{1};
-                        case {'char', 'string'}
-                            index = obj.conditIndexMap(S(1).subs{1});
-                    end
-                    
-                    if length(S) == 1
-                        srefs = obj.condits(index);
-                    else
-                        srefs = obj.condits(index).subrefs(S(2:end));
-                    end
-            end
-        end
+        
         
         function obj = instansh(obj) 
-           for condit = obj.condits
-               condit.instansh()
+           %for condit = obj.condits
+           for i = 1:length(obj.condits)
+               obj.condits(i) = obj.condits(i).instansh();
            end
         end
         %readInCondits(obj)
@@ -103,6 +91,10 @@ classdef Exper
         
             end
         
+            
+            
+            
+            obj = exPlot(obj)
         
     end
     

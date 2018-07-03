@@ -20,9 +20,9 @@ GROUP_BY = {'PI-103', 'IKK', 'Tram', 'Bardox', 'BYL', 'DMSO'};
 %f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
 
 
-%exper = struct();
-%exper.folder = path;
-exper = Exper(path);
+exper = struct();
+exper.folder = path;
+%exper = Exper(path);
 
 
 [~,exper.name] = fileparts(exper.folder(1:end-1));
@@ -31,7 +31,7 @@ exper.plateMapFile = strcat(exper.folder,exper.name,PLATE_MAP_SUF);
 [exper.conditions,exper.conditDict] = MakeConditDict(exper.plateMapFile);
 %exper.xlsFolder = fullfile(exper.folder, 'Xls')
 
-tic
+%tic
 dlist2 = dir(fullfile(exper.folder,'Xls','*.csv'));
 clear condits
 condits(size(exper.conditions,2)) = struct();
@@ -45,6 +45,7 @@ for c = 1:size(exper.conditions,2)
     condits(c).wells(size(conditWells)) = struct();
     %for 
     for w = 1:size(conditWells,2)%w = conditWells
+        %tic
         
     %for i = 1:size(dlist2)
         %exper
@@ -95,6 +96,7 @@ for c = 1:size(exper.conditions,2)
         end
         
         %condit(c).wells(l) = well;
+        %toc
     end
     
 
@@ -106,6 +108,6 @@ for c = 1:size(exper.conditions,2)
 end
 
 
-toc
+%toc
 
 end

@@ -25,7 +25,7 @@ subs.k = mto(1,2).(2);
 %subs.k = subs.k(1)
 %subs.m = mto.(1)
 
-%fprintf(datastructure(subs));
+fprintf(datastructure(subs));
 datastructure(subs);
 
 

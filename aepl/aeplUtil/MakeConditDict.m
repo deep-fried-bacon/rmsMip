@@ -53,7 +53,7 @@ wellDict2 = containers.Map('KeyType','char','ValueType','char');
 
 conditions = cell(0,2);
 groups = cell(0,2);
-condits = Condit.empty();
+%condits = Condit.empty();
 
 
 
@@ -123,17 +123,17 @@ conditions = unique(wellDict.values());
 conditDict = containers.Map;%('KeyType','char','ValueType','char');
 
 conditCount = size(conditions,2);
-condits = Condit.empty(conditCount,0);
+%condits = Condit.empty(conditCount,0);
 
 for condit = conditions
     %disp(condit{1})
     %disp(class(condit{1}))
     conditDict(condit{1}) = {};
 end
-
-for i = 1:conditCount
-    condits(i).name = conditions(i);
-end
+% 
+% for i = 1:conditCount
+%     condits(i).name = conditions(i);
+% end
 
 % for key = myMap2.keys()
 %     %disp(key)

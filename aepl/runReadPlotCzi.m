@@ -1,7 +1,7 @@
-addpath('./aeplClasses')
-addpath('./aeplUtil')
-addpath('./processCzi')
-addpath('./readPlotCvs')
+% addpath('./aeplClasses')
+ addpath('./aeplUtil')
+% addpath('./processCzi')
+ addpath('./readPlotCvs')
 
 
 
@@ -16,6 +16,7 @@ f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma pl
 
 path = f16_06_23;
 %path = f18_06_20;
-%condits = readd(path);
-
-exper = Exper(path)
+tic
+condits = readd(path);
+toc
+%exper = Exper(path)
