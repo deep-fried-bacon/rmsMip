@@ -14,10 +14,10 @@ classdef Cel
     end
     
     methods
-        function obj = Cel(inputArg1,inputArg2)
+        function obj = Cel(id)
             %CELL Construct an instance of this class
             %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
+            obj.id = id;
         end
         
         function outputArg = method1(obj,inputArg)

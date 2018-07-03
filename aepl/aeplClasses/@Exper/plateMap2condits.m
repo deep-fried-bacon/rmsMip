@@ -1,6 +1,6 @@
-function [condits, conditIndexMap] = plateMap2condits(plateMapFile)
-condits = '';
-conditIndexMap = '';
+function [condits, conditIndexMap, groupWellMap] = plateMap2condits(obj,plateMapFile)
+%condits = '';
+%conditIndexMap = '';
 ttable = readtable(plateMapFile,'Delimiter',',','ReadVariableNames',false);
 
 
@@ -48,13 +48,13 @@ for i = 2:size(ttable,2)
 end
 
 
-wellDict = containers.Map('KeyType','char','ValueType','char');
-wellDict2 = containers.Map('KeyType','char','ValueType','char');
+wellConditMap = containers.Map('KeyType','char','ValueType','char');
+wellGroupMap = containers.Map('KeyType','char','ValueType','char');
 
 
-conditions = cell(0,2);
+%conditions = cell(0,2);
 %groups = cell(0,2);
-condits = Condit.empty();
+%condits = Condit.empty();
 
 
 
@@ -67,72 +67,40 @@ for r = 0:stopRowIndices(1)-startRowIndices(1)
         for i = 1:tableCount
             temp{i} = ttable{startRowIndices(i)+r,col}{1};
         end
-        if ~any(cellfun(@isempty,temp))     %if no elements of boop are empty
+        if ~any(cellfun(@isempty,temp))     %if no elements of temp are empty
             temp2 = strjoin(temp,', ');
-            wellDict(strcat(abc(r+1),oneTwoThree{col-1})) = temp2;
+            wellConditMap(strcat(abc(r+1),oneTwoThree{col-1})) = temp2;
             
 
             if groupIndex
-                wellDict2(strcat(abc(r+1),oneTwoThree{col-1})) = ttable{groupIndex+r,col}{1};
+                wellGroupMap(strcat(abc(r+1),oneTwoThree{col-1})) = ttable{groupIndex+r,col}{1};
             end
         end
           
     end
 end
 %end
-% 
-% if length(startRowIndices) == 1 + length(grouping)
-%     for row = startRowIndices(1):stopRowIndices(1)
-%         for col = startColIndex:stopColIndex 
-%             temp = ttable{row,col};
-%             if ~(isempty(temp))
-%                 wellDict(strcat(ttable{row,1}{1},oneTwoThree{col-1})) = temp;
-%             end
-%         end
-%     end
-% elseif length(startRowIndices) == 2 + length(grouping)
-%     for r = 0:length(startRowIndices(1):stopRowIndices{1}) - 1
-%         for col = startColIndex:stopColIndex 
-%             
-%             a = ttable{startRowIndices(1)+r,col}{1};
-%             b = ttable{startRowIndices(2)+r,col}{1};
-% %             disp(a)
-% %             disp(isempty(a))
-% %             disp(b)
-% %             disp(isempty(b))
-%             if ~(isempty(a) || isempty(b))
-%                 temp = strcat(a,", ",b);
-%                 
-%             %disp(strcat('lsjfa;dlfj;ldas:',temp))
-% 
-%                 temp = char(temp(:));
-%                 if ~(length(temp)==1)
-%                     wellDict(strcat(abc(r+1),oneTwoThree{col-1})) = temp;
-%                 end
-%             end
-%         end
-%     end
-% else 
-%     disp("uh oh - too many tables?")
-% end
 
     
     
 
-conditions = unique(wellDict.values());
-groups = unique(wellDict2.values());
+conditions = unique(wellConditMap.values());
+groups = unique(wellGroupMap.values());
 
-conditDict = containers.Map;%('KeyType','char','ValueType','char');
-
+conditWellMap = containers.Map;%('KeyType','char','ValueType','char');
+groupWellMap = containers.Map;
 conditCount = size(conditions,2);
 %condits = Condit.empty(conditCount,0);
 
 for condit = conditions
     %disp(condit{1})
     %disp(class(condit{1}))
-    conditDict(condit{1}) = {};
+    conditWellMap(condit{1}) = {};
 end
 
+for group = groups
+    groupWellMap(group{1}) = {};
+end
 %for i = 1:conditCount
     %condits(i) = Condit(conditions(i));
 %end
@@ -143,51 +111,43 @@ end
 % end
 %wells = wellDict.keys();
 %wells = mat2cell(wells);
-for key = wellDict.keys() 
+for key = wellConditMap.keys() 
     %disp(class(key))
     %disp(myMap(key))
     well = key{1};
-    condit = wellDict(well);
+    condit = wellConditMap(well);
+    conditWellMap(condit) = [conditWellMap(condit), well];
+
+    try 
+        group = wellGroupMap(well);
+        groupWellMap(group) = [groupWellMap(group),condit];
+    catch 
+        
+    end
+    
     %disp(condit)
     
-    if conditDict.isKey(condit)
-        
-        conditDict(condit) = {conditDict(condit), well};
+    %if conditWellMap.isKey(condit)
         
         
-        
-%         %disp('good')
-%         len = length(conditDict(condit));
-%         %conditDict(condit) = {conditDict(condit),well};
-%         temp = conditDict(condit);
-%         %disp(temp)
-%         temp{len+1} = well;
-%         conditDict(condit) = temp;
-%         %disp(conditDict(condit))
-%         %disp(length(conditDict(wellDict(key{1}))))
-%         % = myMap(key{1})
-%     %if iskey(myMap2,myMap(key{1}))
-% %     else
-% %        disp(key) 
 
 
-
-
-
-    end
 end
+
 
 
 condits = Condit.empty(conditCount,0);
 conditIndexMap = containers.Map;
 i = 1;
-for key = conditDict.keys()
+for key = conditWellMap.keys()
     %disp(key{1})
     %disp(conditDict(key{1}))
-    condits(i) = Condit(key{1}, conditDict(key{1}));
+    condits(i) = Condit(key{1}, conditWellMap(key{1}), obj);
     conditIndexMap(key{1}) = i;
     i = i + 1;
 end
+
+
 
 
 end
