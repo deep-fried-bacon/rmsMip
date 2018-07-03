@@ -1,5 +1,5 @@
-GROUP_BY = {'PI', 'IKK', 'Tram', 'Bardox', 'BYL', 'DMSO'};
-
+%GROUP_BY = {'PI', 'IKK', 'Tram', 'Bardox', 'BYL', 'DMSO'};
+GROUP_BY = {'IKK','Rap'};
 clear temp
 temp = struct();
 for gb = GROUP_BY(1:end)
@@ -39,7 +39,7 @@ for fn = 1:size(fdns,1)-1
     %temp2.(f) = grou
     %disp(grou)
     
-    for conditList = grou(:,2)
+    for conditList = grou%(:,2)
         
         %disp(condit)
         laeout = [3,4,100];

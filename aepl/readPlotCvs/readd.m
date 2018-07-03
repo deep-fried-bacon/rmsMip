@@ -1,3 +1,6 @@
+function condits = readd(path)
+
+
 COL_COUNT = 5;
 
 COL_LAYOUT.xcoords = 1;
@@ -12,11 +15,14 @@ PLATE_MAP_SUF = '_plate-map.csv';
 GROUP_BY = {'PI-103', 'IKK', 'Tram', 'Bardox', 'BYL', 'DMSO'};
 
 
-f18_03_18 = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/';
-f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
+%f18_03_18 = '/Users/baylieslab/Documents/Amelia/rmsMim/18-03-18/';
+%f18_06_20 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/18-06-20/';
+%f16_06_23 = '/Volumes/baylieslab/Current Lab Members/Whitney/Rhabdomyosarcoma plate movies/16-06-23 (1st plate)/16-06-23/';
+
 
 %exper = struct();
-exper.folder = f18_06_20;
+%exper.folder = path;
+exper = Exper(path);
 
 
 [~,exper.name] = fileparts(exper.folder(1:end-1));
@@ -101,3 +107,5 @@ end
 
 
 toc
+
+end

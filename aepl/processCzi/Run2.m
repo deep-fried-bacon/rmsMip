@@ -46,8 +46,8 @@ for condition = conditions
         well = struct();
         well.condition = condition{1};
         well.name = w{1};
-        well.filename = strcat(exper.name,'_',well.name,CZI_SUF);
-        well.path = strcat(exper.path,well.filename);
+        well.filename = strcat(exper.name,'_',well.name,Exper.CZI_SUF);
+        well.path = fullfile(exper.path,well.filename);
             
         
             [P,F,~] = fileparts(well.path);
@@ -63,7 +63,7 @@ for condition = conditions
                 well = RunOneWell(exper,well);
 
             catch e
-                fprintf(2,"condition: " + well.condition + ", well:" + well.name)
+                fprintf(1,"condition: " + well.condition + ", well:" + well.name+"\n")
                 fprintf(2,"exception: " + getReport(e)+"\n")
                 
 %                 disp("except.message: " + e.message)
@@ -89,7 +89,7 @@ end
 function well = RunOneWell(exper,well)
                 disp(well.name)
 
-    [well.im,well.imd] =  MicroscopeData.Original.ReadData(exper.folder,well.filename);
+    [well.im,well.imd] =  MicroscopeData.Original.ReadData(exper.path,well.filename);
 
     well.imdim = size(well.im);
     if exper.frameCount == 0 
@@ -103,7 +103,7 @@ function well = RunOneWell(exper,well)
 
     
     %[P,F,~] = fileparts(Name);
-    P2 = fullfile(exper.folder,'outTifs');
+    P2 = fullfile(exper.path,'outTifs');
     if ~exist(P2,'dir')
         mkdir(P2)
     end

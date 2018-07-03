@@ -1,3 +1,9 @@
+% addpath('./aeplClasses')
+% addpath('./aeplUtil')
+% addpath('./processCzi')
+% addpath('./readPlotCvs')
+
+
 classdef Exper
     %EXPER Summary of this class goes here
     %   Detailed explanation goes here
@@ -13,6 +19,7 @@ classdef Exper
         name            % char[]
         plateMapFile    % char[]
         condits         % Condits[]     starts as conditDict
+        conditIndexMap
         cziList         % <filenames>[]
         frameCount      % int
     end
@@ -31,11 +38,36 @@ classdef Exper
             [~,obj.name] = fileparts(obj.path);
             
             obj.plateMapFile = fullfile(obj.path,[obj.name,Exper.PLATE_MAP_SUF]);
-            
             obj.cziList = dir(fullfile(obj.path,['*',Exper.CZI_SUF]));
             
-            
+            [obj.condits, obj.conditIndexMap] = Exper.plateMap2condits(obj.plateMapFile) ;
         end
+        
+        
+        
+        function srefs = subsref(obj, S)
+            switch S(1).type
+                case '.'
+                    srefs = builtin('subsref',obj,S);
+                    
+                case {'()','{}'}
+                    switch class(S(1).subs{1})
+                        case 'double'
+                            disp('d')
+                            index = S(1).subs{1};
+                        case {'char', 'string'}
+                            index = obj.conditIndexMap(S(1).subs{1});
+                    end
+                    
+                    if length(S) == 1
+                        srefs = obj.condits(index);
+                    else
+                        srefs = obj.condits(index).subrefs(S(2:end));
+                    end
+            end
+        end
+
+                
         
         
         
@@ -45,7 +77,7 @@ classdef Exper
         
         
        
-
+         [condits, conditIndexMap] = plateMap2condits(plateMapFile)
         
         function outputArg = method1(obj,inputArg)
             %METHOD1 Summary of this method goes here
