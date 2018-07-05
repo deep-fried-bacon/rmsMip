@@ -20,8 +20,7 @@ classdef (Abstract) DatConBase < handle
     methods
         
         function obj = DatConBase(name)
-            obj.name = name;
-        end
+            obj.name = ne
     
         
         function child = getChild(obj,key)

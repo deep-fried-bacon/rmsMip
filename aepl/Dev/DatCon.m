@@ -1,27 +1,42 @@
 
 
 
-classdef DatCon < DatConBase
+classdef DatCon < handle
     properties
-%         name
-%         parent      % DatCon
-%         root
-%         
-%         
-%         children    % DatCon[]
-%         childIndexMap
-%         data
-%         info        % scalar? struct()
-%         % scalar? struct()
-%         level
+        name
+        parent      % DatCon
+        root
+        
+        
+        children    % DatCon[]
+        childIndexMap
+        data
+        info        % scalar? struct()
+        % scalar? struct()
+        level
         %level
         %depth
     end
     
     methods
-        function obj = DatCon(name,parent,varargin)
+        function obj = DatCon(varargin)
+            switch nargin
+                case 0
+                    return
+                case 1
+                    obj = DatConRoot(varargin)
+                    
+            
+            
+            
+            
+            
+            
+            
+            
+            
             if (ischar(parent) || isstring(parent) && strcmp('root',parent))
-                obj = DatConRoot(name,parent);
+                obj = DatConRoot(name);
                 %return
                 %obj.parent = 'root';
                 return
