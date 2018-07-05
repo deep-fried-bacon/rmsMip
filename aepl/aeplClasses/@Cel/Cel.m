@@ -1,4 +1,4 @@
-classdef Cel
+classdef Cel < Handle
     %CELL Summary of this class goes here
     %   Detailed explanation goes here
     
