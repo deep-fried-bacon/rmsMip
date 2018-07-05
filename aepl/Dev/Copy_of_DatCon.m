@@ -79,30 +79,97 @@ classdef DatCon < handle
            
         end
         
-        
-        function addChild(obj,name)
-           temp = DatCon(name,obj)
-            
-        end
-        
-        function child = grab(obj,varargin)
-            if length(varargin) > obj.depth - obj.level
-                disp('too many indices?')
-            else
-               if isnumeric(varargin{1})
-                  index = varargin{1};
-               elseif ischar(varargin{1}) || isstring(varargin{1})
-                  index = obj.childIndexMap(varargin{1});
-               end
-               
-               if length(varargin) == 1
-                   child = obj.children(index);
-               else
-                   child = obj.children(index).grab(varargin{2:end});
-               end
-                   
+      
+        function varargout = subsref(obj, s)
+%             for i = 1:length(s)
+%                 disp(s(i))
+%             end
+            switch s(1).type
+                case '.'
+                    [varargout{1:nargout}] = builtin('subsref',obj,s);
+                    
+                case '()'
+                    if length(obj) > 1
+                        [varargout{1:nargout}] = builtin('subsref',obj,s);
+                    else
+
+                    ddepth = length(s(1).subs);
+                    if ddepth > obj.depth - obj.level
+                        disp('too many indices?')
+                    else
+                        if isnumeric(s(1).subs{1})
+                            index = s(1).subs{1};
+                        elseif ischar(s(1).subs{1}) || isstring(s(1).subs{1})
+                            index = obj.childIndexMap(s(1).subs{1});
+                        else
+                            error('index must be a number or char/string');
+                        end
+
+                        if length(s(1).subs) == 1
+                            [varargout{1:nargout}] = obj.children(index);
+                        else
+                            s(1).subs = s(1).subs(2:end);
+                            [varargout{1:nargout}] = subsref(obj.children(index), s);
+                        end
+                    end
+                    
+                    end
+                        
+                case '{}'
+                    [varargout{1:nargout}] = builtin('subsref',obj,s);
+                    
             end
         end
+        
+        
+        function obj = subsasgn(obj, s, varargin)
+%             for i = 1:length(s)
+%                 disp(s(i))
+%             end
+            for i = 1:length(s)
+                disp(s(i))
+            end
+            switch s(1).type
+                case '.'
+                    obj = builtin('subsasgn',obj,s, varargin);
+                    
+                    
+                case '()'
+                    if length(obj) > 1
+                        obj = builtin('subsasgn',obj,s,varargin);
+                    else
+
+                    
+                    ddepth = length(s(1).subs);
+                    if ddepth > obj.depth - obj.level
+                        disp('too many indices?')
+                    else
+                        if isnumeric(s(1).subs{1})
+                            index = s(1).subs{1};
+                        elseif ischar(s(1).subs{1}) || isstring(s(1).subs{1})
+                            index = obj.childIndexMap(s(1).subs{1});
+                        else
+                            error('index must be a number or char/string');
+                        end
+                        
+                        
+                        if length(s(1).subs) == 1
+                            obj.children(index) = varargin;
+                        else
+                            s(1).subs = s(1).subs(2:end);
+                            
+                            obj.children(index) = subsasgn(obj.children(index), s, varargin);
+                        end
+                        
+                    end
+                        
+                    end
+                    
+                case '{}'
+                    obj = builtin('subsasgn',obj,s,varargin); 
+            end
+        end
+    
         
         function str = toString(obj)
             spcs = (obj.level-1);
@@ -120,60 +187,8 @@ classdef DatCon < handle
             end
             
         end
-        
-        function floop(obj,func)
-            func(obj)
-           for c = 1:obj.childCount
-               % floop ...
-              obj.children(c).floop(func)
-           end
-        end
-        
-        
-        function bool = isAnc(obj,cont)
-            
-            
-        end
-        
-        
-        function conRef = getRef(obj,cont
-        
-        
-        
-        function test(obj)
-            disp(['[',num2str(obj.id),'] - ',obj.name])
-        end
-        
-        
-        
-%         function colStr = toString2(obj,curId,red)
-%             spcs = (obj.level-1);
-%             str = "";
-%             for i = 1:spcs-1
-%                 str = str + "| ";
-%             end
-%             if ~red
-%                 
-%             
-%             
-%             if spcs >= 1
-%             str = str + "\x221F-"; 
-%             end
-%             
-%             str = strcat(str,obj.name,'\n');
-%             for c = 1:obj.childCount
-%                 %if o
-%                 str = str + obj.children(c).toString();
-%             end
-%             
-%         end
 
         function [fore,cur,aft] = toStringParts(obj,curId)
-            
-            fore = "";
-            cur = "";
-            aft = "";
-            
             spcs = (obj.level-1);
             str = "";
             for i = 1:spcs-1
@@ -184,15 +199,12 @@ classdef DatCon < handle
             end
             str = strcat(str,obj.name,'\n');
             for c = 1:obj.childCount
-                disp(str)
-                length(obj.children(c).id) == length(curId)
-                if (length(obj.children(c).id) == length(curId)) && all(obj.children(c).id == curId)
+                if length(obj.children(c).id) == length(curId) && all(obj.children(c).id == curId)
                    fore = str;
                    cur = obj.children(c).toString();
                    str = "";
                    
                 else
-                    %disp(
                     str = str + obj.children(c).toString();
                 end
             end
@@ -203,9 +215,7 @@ classdef DatCon < handle
         
         function disp(obj)
             if length(obj) == 1
-                %disp(obj.name)
-                %obj.dispCur()
-                builtin('disp',obj)
+                fprintf(1,obj.toString());
             else
                for o = obj
                    disp(o.name)
@@ -216,9 +226,9 @@ classdef DatCon < handle
         
         function dispCur(obj) 
            [fore,cur,aft] = obj.top.toStringParts(obj.id);
-           cprintf('blue',fore)
+           fprintf(1,fore)
            cprintf('red',cur)
-           cprintf('green',aft)
+           fprintf(1,aft)
         end
         
         
